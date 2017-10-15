@@ -1,18 +1,17 @@
 """
-Clarissa Phillips                                                 October 2017
+Clarissa Phillips                                                  October 2017
 The question class of my Trivia Game.
-                                                                           """
+                                                                            """
 from graphics import *
 
 class Question(object):
     """ Class of methods for question object in my Trivia Game. """
 
-    def __init__(self, win, question, answer, hint):
+    def __init__(self, win, question, answer, diff):
         """Constructor for question class"""
 
         w = win.getWidth()
         h = win.getHeight()
-        question = question + "?"
         self.win = win
         qPoint = Point(w/2,h/2)
         textObj = Text(qPoint, question)
@@ -21,10 +20,9 @@ class Question(object):
         self.answer = answer
         textObj.draw(win)
         self.textObj = textObj
-        hPoint = Point(w/2, h*.7)
-        hintMessage = "Hint: " + hint
-        hint = Text(hPoint,hintMessage)
-        self.hint = hint
+        dPoint = Point(w/2, h*.7)
+        diff = Text(dPoint, diff)
+        self.diff = diff
         return
 
     def checkInput(self, ans):
@@ -37,75 +35,17 @@ class Question(object):
         else:
             return False
 
-    def displayHint(self):
+    def displayDiff(self):
         """ Method that displays the hint when prompted. """
-        self.hint.draw(self.win)
+        self.diff.draw(self.win)
         return
 
-    def unDisplayHint(self):
+    def unDisplayDiff(self):
         """ Method that displays the hint when prompted. """
-        self.hint.undraw()
+        self.diff.undraw()
         return
 
     def undraw(self):
         """ Method to undraw question object from graphic window. """
         self.textObj.undraw()
         return
-
-################################################################################
-
-def main():
-
-    w = 400
-    h = w
-    win = GraphWin("Trivia Game", w, h)
-    prompt = Text(Point(w/2,25), "Welcome to my Trivia Game!")
-    prompt.setSize(20)
-    prompt.draw(win)
-    win.getMouse()
-    prompt.setText("Answer this question:")
-    text = "hello"
-    ans = "hey"
-    hint = "Casual response..."
-    question1 = Question(win, text, ans, hint)
-    ePoint = Point(w*.35, h*.9)
-    entryObj = Entry(ePoint, 30)
-    entryObj.draw(win)
-
-    # Create "Submit" button
-    sP1 = Point(w*.65,(h*.9)-10)
-    sP2 = Point((w*.65)+50, (h*.9)+10)
-    submitBt = Rectangle(sP1, sP2)
-    submitBt.setFill("gray")
-    sBtCenter = submitBt.getCenter()
-    sBtText = Text(sBtCenter,"Submit")
-    submitBt.draw(win)
-    sBtText.draw(win)
-
-    # Create "Hint" button
-    hintBt = submitBt.clone()
-    hintBt.move(60,0)
-    hBtCenter = hintBt.getCenter()
-    hBtText = Text(hBtCenter,"Hint")
-    hintBt.draw(win)
-    hBtText.draw(win)
-
-    usrInput = ""
-    correct = None
-    while True:
-        click = win.getMouse()
-        if (w*.65) <= click.getX() <= ((w*.65)+50):
-            if ((h*.9)-10) <= click.getY() <= ((h*.9)+10):
-                usrInput = entryObj.getText()
-                correct = question1.checkInput(usrInput)
-                if correct == True:
-                    break
-        elif (w*.65)+60 <= click.getX() <= ((w*.65)+110):
-            if ((h*.9)-10) <= click.getY() <= ((h*.9)+10):
-                question1.displayHint()
-                hintBt.undraw()
-                hBtText.undraw()
-
-    win.getMouse()
-
-#main()
